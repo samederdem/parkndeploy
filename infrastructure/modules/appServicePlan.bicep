@@ -7,14 +7,14 @@ resource plan 'Microsoft.Web/serverfarms@2022-09-01' = {
   location: location
   
   sku: {
-    name: 'F1' // We use F1 pricing plan (free one) as we don't need specific features
+    name: 'F1'
   }
   
-  kind: 'app,linux' // Allow to deploy on an App Service using Linux OS
+  kind: 'app,linux'
   
   properties: {
-    reserved: true // Specifity of App Service with Linux OS
+    reserved: true
   }
 }
 
-output planId string = plan.id // Export the App Service identifier
+output planId string = plan.id
