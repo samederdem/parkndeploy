@@ -23,7 +23,11 @@ function App() {
         Where can I Park in Angers ? 👀
       </h1>
 
-      <ParkingListFilters />
+      <ParkingListFilters
+        onChange={(parkingName: string) => {
+          console.log(parkingName);
+        }}
+      />
 
       {isPending && <LoadingSpinner className="mr-2 h-4 w-4 animate-spin" />}
       {isError && <span>Something went wrong with the backend ...</span>}
