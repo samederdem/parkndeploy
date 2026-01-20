@@ -13,24 +13,27 @@ function App() {
 
   const { data, isPending, isError } = useQuery({
     queryKey: [PARKINGS_QUERY_KEY, { parkingName }],
-    queryFn: () => ParkingsAngersEndpointsQueryMethods.getAllParkings(parkingName),
+    queryFn: () =>
+      ParkingsAngersEndpointsQueryMethods.getAllParkings(parkingName),
   });
 
-  console.log(parkingName)
-
   return (
-    <div className="flex flex-col gap-5 items-center">
+    <div className="flex flex-col gap-5 items-center min-h-screen">
       <h1 className="text-2xl font-bold text-center">
         Where can I Park in Angers ? 👀
       </h1>
-      <ParkingListFilters
-        onChange={(parkingName: string) => {
-          console.log(parkingName);
-        }}
-      />
+
+      <ParkingListFilters />
+
       {isPending && <LoadingSpinner className="mr-2 h-4 w-4 animate-spin" />}
       {isError && <span>Something went wrong with the backend ...</span>}
       {data && <ParkingList parkings={data.parkings} />}
+
+      <footer className="mt-auto py-4">
+        <span className="text-xs text-muted-foreground">
+          Version {__APP_GIT_TAG__}
+        </span>
+      </footer>
     </div>
   );
 }
