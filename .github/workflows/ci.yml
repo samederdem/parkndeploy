@@ -16,7 +16,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -40,7 +41,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
@@ -57,3 +59,9 @@ jobs:
         with:
           name: backend-publish
           path: backend/publish
+          
+  trigger_cd:
+    name: Trigger CD
+    needs: [ci_frontend, ci_backend]
+    uses: ./.github/workflows/cd.yml
+    secrets: inherit
