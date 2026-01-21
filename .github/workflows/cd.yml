@@ -3,10 +3,6 @@ name: CD
 on:
   workflow_call:
 
-permissions:
-  id-token: write
-
-
 env:
   AZURE_RG_NAME: rg-${{ vars.PROJECT_NAME }}-${{ vars.AZURE_RESOURCE_IDENTIFIER }}
 
@@ -15,6 +11,8 @@ jobs:
   deploy_infrastructure:
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      id-token: write 
 
     outputs:
       appServiceName: ${{ steps.bicep_deploy.outputs.appServiceName }}
