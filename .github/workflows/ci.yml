@@ -19,7 +19,6 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v4
           with:
-            fetch-depth: 0
             ref: main
 
         - name: Setup Node.js
@@ -40,7 +39,7 @@ jobs:
             git config user.email "github-actions@github.com"
             git add frontend/package.json frontend/package-lock.json
             git commit -m "chore: sync version $VERSION from tag"
-            git push origin main
+            git push
 
   ci_frontend:
     name: CI - Frontend
