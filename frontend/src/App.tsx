@@ -35,7 +35,7 @@ function App() {
 
       <footer className="mt-auto py-4">
         <span className="text-xs text-muted-foreground">
-          Version {__APP_GIT_TAG__}
+          Version {__APP_VERSION__}
         </span>
       </footer>
     </div>

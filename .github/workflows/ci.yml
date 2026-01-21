@@ -8,8 +8,34 @@ on:
 
 permissions:
   id-token: write
+  contents: write
 
 jobs:
+
+  sync-version:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: Setup Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: 20
+
+        - run: |
+            VERSION="${GITHUB_REF#refs/tags/}"
+            npm version "$VERSION" --no-git-tag-version --allow-same-version
+
+        - run: |
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git add package.json package-lock.json
+            git commit -m "sync version $VERSION from tag"
+            git push
 
   ci_frontend:
     name: CI - Frontend

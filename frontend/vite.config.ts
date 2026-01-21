@@ -1,22 +1,22 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
-import { execSync } from 'node:child_process'
+import fs from 'fs'
 
-function getGitTag() {
+function getAppVersion() {
   try {
-    return execSync('git describe --tags --abbrev=0').toString().trim()
+    const packageJsonPath = path.resolve(__dirname, 'package.json')
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'))
+    return packageJson.version || '0.0.0'
   } catch {
-    return 'no-tag'
+    return '0.0.0'
   }
 }
-
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
     proxy: {
-      // redirect request on /api to target specified
       '/api': {
         target: 'https://localhost:7085/',
         secure: false,
@@ -29,7 +29,7 @@ export default defineConfig({
     },
   },
   define: {
-    __APP_GIT_TAG__: JSON.stringify(getGitTag()),
+    __APP_VERSION__: JSON.stringify(getAppVersion()),
   },
   plugins: [react()],
 })
