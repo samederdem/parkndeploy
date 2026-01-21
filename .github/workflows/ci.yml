@@ -38,7 +38,7 @@ jobs:
             git config user.name "github-actions"
             git config user.email "github-actions@github.com"
             git add frontend/package.json frontend/package-lock.json
-            git commit -m "chore: sync version $VERSION from tag"
+            git commit -m "sync version $VERSION from tag"
             git push
 
   ci_frontend:
