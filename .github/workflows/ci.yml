@@ -27,24 +27,24 @@ jobs:
             node-version: 20
 
         - name: Update package.json version from tag
-          run: npm version "$VERSION" --no-git-tag-version --allow-same-version
+          run: |
+            VERSION="${GITHUB_REF#refs/tags/}"
+            npm version "$VERSION" --no-git-tag-version --allow-same-version
           working-directory: frontend
-          env:
-            VERSION: "${GITHUB_REF#refs/tags/}"
 
         - name: Commit and push changes
           run: |
+            VERSION="${GITHUB_REF#refs/tags/}"
             git config user.name "github-actions"
             git config user.email "github-actions@github.com"
             git add frontend/package.json frontend/package-lock.json
             git commit -m "chore: sync version $VERSION from tag"
             git push
-          env:
-            VERSION: "${GITHUB_REF#refs/tags/}"
 
   ci_frontend:
     name: CI - Frontend
     runs-on: ubuntu-latest
+    needs: sync-version
 
     steps:
       - name: Checkout repository
@@ -70,6 +70,7 @@ jobs:
   ci_backend:
     name: CI - Backend
     runs-on: ubuntu-latest
+    needs: sync-version
 
     steps:
       - name: Checkout repository
