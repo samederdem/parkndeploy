@@ -26,16 +26,21 @@ jobs:
           with:
             node-version: 20
 
-        - run: |
-            VERSION="${GITHUB_REF#refs/tags/}"
-            npm version "$VERSION" --no-git-tag-version --allow-same-version
+        - name: Update package.json version from tag
+          run: npm version "$VERSION" --no-git-tag-version --allow-same-version
+          working-directory: frontend
+          env:
+            VERSION: "${GITHUB_REF#refs/tags/}"
 
-        - run: |
+        - name: Commit and push changes
+          run: |
             git config user.name "github-actions"
             git config user.email "github-actions@github.com"
-            git add package.json package-lock.json
-            git commit -m "sync version $VERSION from tag"
+            git add frontend/package.json frontend/package-lock.json
+            git commit -m "chore: sync version $VERSION from tag"
             git push
+          env:
+            VERSION: "${GITHUB_REF#refs/tags/}"
 
   ci_frontend:
     name: CI - Frontend
